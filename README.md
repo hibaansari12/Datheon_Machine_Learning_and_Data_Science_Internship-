@@ -237,8 +237,7 @@ Both models beat the target ROC-AUC of 0.80.
  
 ### 1️⃣ Exploring the data
 <p align="center">
-  <img width="85%" alt="Class distribution and churn analysis" src="<img width="1376" height="365" alt="Screenshot 2026-11-05 223447" src="https://github.com/user-attachments/assets/fd13827a-1814-4336-80b5-dc7f8d4565f7" />
-" />
+  <img width="85%" alt="Class distribution and churn analysis" src="https://github.com/user-attachments/assets/fd13827a-1814-4336-80b5-dc7f8d4565f7" />
 </p>
 > 1,869 customers churned and 5,174 stayed (26.5% churn), so the classes are imbalanced.
  
@@ -246,8 +245,7 @@ Both models beat the target ROC-AUC of 0.80.
  
 ### 2️⃣ Model comparison: ROC curves
 <p align="center">
-  <img width="90%" alt="ROC curves for Random Forest and XGBoost" src="<img width="735" height="560" alt="Screenshot 2026-11-05 223517" src="https://github.com/user-attachments/assets/d7d03fab-8834-4944-be53-c4fe283ad6f0" />
-" />
+  <img width="70%" alt="ROC curves for Random Forest and XGBoost" src="https://github.com/user-attachments/assets/d7d03fab-8834-4944-be53-c4fe283ad6f0" />
 </p>
 > XGBoost reaches the highest ROC-AUC (0.844), just ahead of Random Forest (0.839). Both are above the 0.80 target.
  
@@ -255,8 +253,7 @@ Both models beat the target ROC-AUC of 0.80.
  
 ### 3️⃣ Where do the models go wrong?
 <p align="center">
-  <img width="90%" alt="Confusion matrices for Random Forest and XGBoost" src="<img width="921" height="372" alt="Screenshot 2026-11-05 223607" src="https://github.com/user-attachments/assets/7423c4ef-08a3-4f18-af9b-aafd1a4af015" />
-" />
+  <img width="90%" alt="Confusion matrices for Random Forest and XGBoost" src="https://github.com/user-attachments/assets/7423c4ef-08a3-4f18-af9b-aafd1a4af015" />
 </p>
 > Both models catch about 70% of churners, but also flag some loyal customers as likely to leave (false positives).
  
@@ -264,12 +261,12 @@ Both models beat the target ROC-AUC of 0.80.
  
 ### 4️⃣ What drives churn?
 <p align="center">
-  <img width="90%" alt="Top 10 feature importances for churn prediction" src="<img width="1336" height="450" alt="Screenshot 2026-11-05 223629" src="https://github.com/user-attachments/assets/0b39f21a-4bd8-4f99-a915-525827d671ae" />
-" />
+  <img width="90%" alt="Top 10 feature importances for churn prediction" src="https://github.com/user-attachments/assets/0b39f21a-4bd8-4f99-a915-525827d671ae" />
 </p>
 > Month-to-month contracts are the strongest churn signal, followed by online security, tech support, internet service type, payment method and tenure.
  
 ---
+
  
 ## 💡 Business takeaways
  
