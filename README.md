@@ -159,7 +159,119 @@ Best alphas from `GridSearchCV`: Ridge ≈ 1.16, Lasso ≈ 0.68.
 </p>
 
 > Lasso zeroes out the 5-row `ISLAND` category and the redundant count features first, while `median_income`, `bedrooms_per_room` and `ocean_proximity_INLAND` survive the longest.
-
+# Task 3 — Customer Churn Prediction (Random Forest vs XGBoost)
+ 
+Predicting whether a telecom customer will leave the service, comparing **Random Forest** and **XGBoost**, handling class imbalance with **SMOTE** and **class weighting**, and evaluating with **ROC-AUC, precision, recall and F1-score**.
+ 
+Built as part of my Machine Learning & Data Science internship at **Datheon**.
+ 
+---
+ 
+## Problem statement
+ 
+Predict `Churn` (Yes / No) for telecom customers from their subscription details, usage patterns and demographics. The task requires:
+ 
+- cleaning and preprocessing the customer data
+- encoding categorical features with `OneHotEncoder`
+- handling class imbalance (SMOTE and class weighting)
+- training Random Forest and XGBoost classifiers
+- 5-fold Stratified Cross-Validation
+- tuning hyperparameters with `RandomizedSearchCV`
+- evaluating with ROC-AUC, precision, recall and F1-score
+- identifying the top 10 features that influence churn
+## Dataset
+ 
+| Property | Value |
+|---|---|
+| Source | Telco Customer Churn, `telco_churn.csv` |
+| Rows × columns | 7,043 × 21 |
+| Target | `Churn` (Yes / No) |
+| Churned / retained | 1,869 / 5,174 (churn rate 26.5%) |
+| Numeric / categorical features | 3 / 16 |
+| Data issue | 11 blank values in `TotalCharges` |
+ 
+**Cleaning:** `TotalCharges` was converted from text to numeric. The 11 blanks were set to 0 because all of those customers had zero tenure. `customerID` was dropped as it has no predictive value.
+ 
+## Approach
+ 
+1. **Explore** the data: class distribution, churn by contract type, tenure distribution.
+2. **Clean**: convert `TotalCharges` to numeric, fix missing values, drop `customerID`.
+3. **Split first** (80/20, stratified, `random_state=42`) so all preprocessing is learned from training data only (no data leakage).
+4. **Preprocessing pipeline**: `StandardScaler` for numeric features, `OneHotEncoder` for categorical features.
+5. **Class imbalance**
+   - SMOTE to create synthetic minority-class samples
+   - `class_weight="balanced"` for Random Forest
+   - `scale_pos_weight` for XGBoost
+6. **Modelling**: Random Forest and XGBoost, compared with 5-fold Stratified Cross-Validation.
+7. **Tuning**: `RandomizedSearchCV` (12 iterations per model), optimising ROC-AUC.
+8. **Evaluation** on the held-out test set with ROC curves, confusion matrices, classification reports and feature importance.
+## Results
+ 
+### Class balancing comparison (5-fold CV ROC-AUC)
+ 
+| Model | ROC-AUC |
+|---|---|
+| XGBoost + Class Weighting | 0.844 |
+| XGBoost + SMOTE | 0.843 |
+| Random Forest + Class Weighting | 0.823 |
+| Random Forest + SMOTE | 0.819 |
+ 
+### Final models (test set, 1,409 customers)
+ 
+| Model | ROC-AUC | Accuracy | Churn Precision | Churn Recall | Churn F1 |
+|---|---|---|---|---|---|
+| Random Forest | 0.839 | 0.770 | 0.551 | 0.717 | 0.623 |
+| XGBoost | 0.844 | 0.774 | 0.560 | 0.701 | 0.622 |
+ 
+Both models beat the target ROC-AUC of 0.80.
+ 
+### Key findings
+ 
+- **Accuracy alone is misleading.** Only 26.5% of customers churned, so ROC-AUC, precision and recall matter more.
+- **SMOTE and class weighting perform almost identically.** Their CV ROC-AUC scores differ by only 0.001 to 0.004.
+- **XGBoost is slightly better overall** (ROC-AUC 0.844), while Random Forest has slightly higher churn recall (0.717 vs 0.701).
+- **Both models catch about 70% of real churners** at the default 0.5 threshold, at the cost of some false alarms (churn precision ≈ 0.55 to 0.56).
+- **Main churn indicators:** month-to-month contracts, no online security, no tech support, fiber optic internet, electronic check payments and short tenure.
+- **Business insight:** customers on flexible contracts, with short tenure and few add-on services, are most at risk of leaving.
+## 📊 Results & Visualisations
+ 
+### 1️⃣ Exploring the data
+<p align="center">
+  <img width="85%" alt="Class distribution and churn analysis" src="ADD_YOUR_IMAGE_LINK_HERE" />
+</p>
+> 1,869 customers churned and 5,174 stayed (26.5% churn), so the classes are imbalanced.
+ 
+---
+ 
+### 2️⃣ Model comparison: ROC curves
+<p align="center">
+  <img width="90%" alt="ROC curves for Random Forest and XGBoost" src="ADD_YOUR_IMAGE_LINK_HERE" />
+</p>
+> XGBoost reaches the highest ROC-AUC (0.844), just ahead of Random Forest (0.839). Both are above the 0.80 target.
+ 
+---
+ 
+### 3️⃣ Where do the models go wrong?
+<p align="center">
+  <img width="90%" alt="Confusion matrices for Random Forest and XGBoost" src="ADD_YOUR_IMAGE_LINK_HERE" />
+</p>
+> Both models catch about 70% of churners, but also flag some loyal customers as likely to leave (false positives).
+ 
+---
+ 
+### 4️⃣ What drives churn?
+<p align="center">
+  <img width="90%" alt="Top 10 feature importances for churn prediction" src="ADD_YOUR_IMAGE_LINK_HERE" />
+</p>
+> Month-to-month contracts are the strongest churn signal, followed by online security, tech support, internet service type, payment method and tenure.
+ 
+---
+ 
+## 💡 Business takeaways
+ 
+Ranking customers by predicted churn probability lets a telecom company target retention early, for example with discounts, better support or longer-term plans for the highest-risk customers.
+ 
+---
 ## 📁 Repository structure
 ```
 .
@@ -167,7 +279,9 @@ Best alphas from `GridSearchCV`: Ridge ≈ 1.16, Lasso ≈ 0.68.
 ├── iris.csv                                    # Task 1 dataset
 ├── Task2_ regression_housing.ipynb             # Task 2: Housing regression
 ├── housing.csv                                 # Task 2 dataset (California Housing)
-├── requirements.txt                            # shared dependencies for both tasks
+├── Task3_churn_classification.ipynb            # Task 3: Churn classification
+├── telco_churn.csv                             # Task 3 dataset (Telco Customer Churn)
+├── requirements.txt                            # shared dependencies for all tasks
 └── README.md                                   # overview, results and plots
 ```
 
