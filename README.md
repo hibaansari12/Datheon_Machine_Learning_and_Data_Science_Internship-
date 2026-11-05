@@ -51,6 +51,13 @@ Both models got 28 of 30 test flowers right. All mistakes were between versicolo
 
 > Logistic Regression draws smooth, straight borders, while the Decision Tree draws box-shaped regions. Stars are test flowers.
 *Pairplot of all four features, coloured by species. Setosa is clearly separated, while versicolor and virginica overlap slightly.*
+> 
+> ## How to run
+```bash
+pip install -r requirements.txt
+jupyter notebooks_Iris_classfication.ipynb
+
+```
 # Task 2 — Real Estate Housing Price Prediction (OLS vs Ridge vs Lasso)
 
 Predicting median house values on the **California Housing** dataset and comparing **Ordinary Least Squares (OLS)**, **Ridge (L2)** and **Lasso (L1)** regression using **RMSE, MAE and R²**.
@@ -159,6 +166,13 @@ Best alphas from `GridSearchCV`: Ridge ≈ 1.16, Lasso ≈ 0.68.
 </p>
 
 > Lasso zeroes out the 5-row `ISLAND` category and the redundant count features first, while `median_income`, `bedrooms_per_room` and `ocean_proximity_INLAND` survive the longest.
+>
+> ## How to run
+```bash
+pip install -r requirements.txt
+jupyter notebook Task2_regression_classification.ipynb
+
+```
 # Task 3 — Customer Churn Prediction (Random Forest vs XGBoost)
  
 Predicting whether a telecom customer will leave the service, comparing **Random Forest** and **XGBoost**, handling class imbalance with **SMOTE** and **class weighting**, and evaluating with **ROC-AUC, precision, recall and F1-score**.
@@ -289,7 +303,7 @@ Ranking customers by predicted churn probability lets a telecom company target r
 ## How to run
 ```bash
 pip install -r requirements.txt
-jupyter notebook Iris_Classification.ipynb
+jupyter notebook Task3_churn_classification.ipynb
 ```
 
 ## Tools
